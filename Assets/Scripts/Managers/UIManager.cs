@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-﻿using Signals;
+using Signals;
 using UnityEngine;
 
 namespace Managers
@@ -10,24 +9,17 @@ namespace Managers
 
         #region Public Variables
 
-        
-
         #endregion
 
         #region Serialized Variables
-
-        
 
         #endregion
 
         #region Private Variables
 
-        
-
         #endregion
 
         #endregion
-
 
         private void OnEnable()
         {
@@ -36,18 +28,18 @@ namespace Managers
 
         private void SubscribeEvents()
         {
+            CoreGameSignals.Instance.onLevelInitialize -= OnLevelInitialize;
             CoreGameSignals.Instance.onLevelSuccessful += OnLevelSuccessful;
             CoreGameSignals.Instance.onLevelFailed += OnLevelFailed;
             CoreGameSignals.Instance.onReset += OnReset;
-            CoreGameSignals.Instance.onLevelInitialize += OnLevelInitialize;
         }
 
         private void UnSubscribeEvents()
         {
+            CoreGameSignals.Instance.onLevelInitialize -= OnLevelInitialize;
             CoreGameSignals.Instance.onLevelSuccessful -= OnLevelSuccessful;
             CoreGameSignals.Instance.onLevelFailed -= OnLevelFailed;
             CoreGameSignals.Instance.onReset -= OnReset;
-            CoreGameSignals.Instance.onLevelInitialize -= OnLevelInitialize;
         }
 
         private void OnDisable()
@@ -94,27 +86,5 @@ namespace Managers
             CoreUISignals.Instance.onCloseAllPanels?.Invoke();
             CoreUISignals.Instance.onOpenPanel?.Invoke(UIPanelTypes.Start, 1);
         }
-        
-        
     }
 }
-=======
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class UIManager : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-}
->>>>>>> origin/main
