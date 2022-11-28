@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿public enum UIPanelTypes 
 {
     Start,
@@ -5,3 +6,12 @@
     Fail,
     Level
 }
+=======
+public enum UIPanelTypes
+{
+    Start,
+    Level,
+    Win,
+    Fail
+}
+>>>>>>> origin/main
