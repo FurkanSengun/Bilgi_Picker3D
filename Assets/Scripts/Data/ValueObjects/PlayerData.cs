@@ -5,34 +5,33 @@ namespace Data.ValueObjects
     [Serializable]
     public struct PlayerData
     {
-        public MovementData movementData;
-        public ScaleData scaleData;
-
+        public MovementData MovementData;
+        public ScaleData ScaleData;
     }
-    
+
     [Serializable]
     public struct MovementData
     {
-        public float forwardSpeed;
-        public float sidewaysSpeed;
-        public float forwardForceCounter;
+        public float ForwardSpeed;
+        public float SidewaysSpeed;
+        public float ForwardForceCounter;
 
         public MovementData(float forwardSpeed, float sidewaysSpeed, float forwardForceCounter)
         {
-            this.forwardSpeed = forwardSpeed;
-            this.sidewaysSpeed = sidewaysSpeed;
-            this.forwardForceCounter = forwardForceCounter;
+            ForwardSpeed = forwardSpeed;
+            SidewaysSpeed = sidewaysSpeed;
+            ForwardForceCounter = forwardForceCounter;
         }
     }
-    
+
     [Serializable]
     public struct ScaleData
     {
-        public float scaleCounter;
+        public float ScaleCounter;
 
         public ScaleData(float scaleCounter)
         {
-            this.scaleCounter = scaleCounter;
+            ScaleCounter = scaleCounter;
         }
     }
 }

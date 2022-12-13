@@ -4,6 +4,7 @@ using Data.ValueObjects;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Signals;
+using System;
 
 namespace Managers
 {
@@ -40,8 +41,8 @@ namespace Managers
 
         private void SendDataToControllers()
         {
-            movementController.GetMovementData(_data.movementData);
-            meshController.GetMeshData(_data.scaleData);
+            movementController.GetMovementData(_data.MovementData);
+            meshController.GetMeshData(_data.ScaleData);
         }
 
         private void OnEnable()
@@ -51,12 +52,39 @@ namespace Managers
 
         private void SubscribeEvents()
         {
+            InputSignal.Instance.onInputTaken += OnInputTaken;
+            InputSignal.Instance.onInputReleased += OnInputReleased;
+            InputSignal.Instance.onInputDragged += OnInputDragged;
+            CoreGameSignals.Instance.onPlay += onPlay;
+            CoreGameSignals.Instance.onLevelSuccessful += OnLevelSuccessful;
+            CoreGameSignals.Instance.onLevelFailed += OnLevelFailed;
+            CoreGameSignals.Instance.onStageAreaEntered += OnStageAreaEntered;
+            CoreGameSignals.Instance.onStageAreaSuccessful += OnStageAreaSuccessful;
             CoreGameSignals.Instance.onReset += OnReset;
+
         }
 
         private void UnSubscribeEvents()
         {
+            InputSignal.Instance.onInputTaken -= OnInputTaken;
+            InputSignal.Instance.onInputReleased -= OnInputReleased;
+            InputSignal.Instance.onInputDragged -= OnInputDragged;
+            CoreGameSignals.Instance.onPlay -= onPlay;
+            CoreGameSignals.Instance.onLevelSuccessful -= OnLevelSuccessful;
+            CoreGameSignals.Instance.onLevelFailed -= OnLevelFailed;
+            CoreGameSignals.Instance.onStageAreaEntered -= OnStageAreaEntered;
+            CoreGameSignals.Instance.onStageAreaSuccessful -= OnStageAreaSuccessful;
             CoreGameSignals.Instance.onReset -= OnReset;
+        }
+
+        private void onPlay()
+        {
+            movementController.IsReadyToPlay(true);
+        }
+
+        private void OnInputDragged(HorizontalInputParams inputParams)
+        {
+            movementController.UpdateInputParams(inputParams);
         }
 
         private void OnDisable()
@@ -64,11 +92,41 @@ namespace Managers
             UnSubscribeEvents();
         }
 
+        private void OnInputTaken()
+        {
+            movementController.IsReadyToMove(true);
+        }
+
+        private void OnInputReleased()
+        {
+            movementController.IsReadyToMove(false);
+        }
+
         private void OnReset()
         {
             movementController.OnReset();
             meshController.OnReset();
             physicsController.OnReset();
+        }
+
+        private void OnLevelFailed()
+        {
+            movementController.IsReadyToPlay(false);
+        }
+
+        private void OnLevelSuccessful()
+        {
+            movementController.IsReadyToPlay(false);
+        }
+
+        private void OnStageAreaEntered()
+        {
+            movementController.IsReadyToPlay(false);
+        }
+
+        private void OnStageAreaSuccessful()
+        {
+            movementController.IsReadyToPlay(true);
         }
     }
 }
