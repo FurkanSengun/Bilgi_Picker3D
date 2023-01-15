@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Xml.Schema;
 using Data.UnityObjects;
 using Data.ValueObjects;
 using DG.Tweening;
@@ -6,12 +8,15 @@ using Signals;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using Keys;
 
 namespace Controllers.Pool
 {
     public class PoolController : MonoBehaviour
     {
         #region Self Variables
+        
+        public static byte totalCollectCount;
 
         #region Serialized Variables
 
@@ -34,6 +39,7 @@ namespace Controllers.Pool
         private void Awake()
         {
             _data = GetPoolData();
+            
         }
 
         private PoolData GetPoolData()
@@ -90,6 +96,7 @@ namespace Controllers.Pool
             if (stageValue == stageID)
             {
                 return _collectedCount >= _data.RequiredObjectCount;
+                
             }
 
             return false;
@@ -115,6 +122,8 @@ namespace Controllers.Pool
         private void IncreaseCollectedCount()
         {
             _collectedCount++;
+            totalCollectCount++;
+
         }
 
         private void OnTriggerExit(Collider other)
@@ -127,6 +136,8 @@ namespace Controllers.Pool
         private void DecreaseTheCollectedCount()
         {
             _collectedCount--;
+            totalCollectCount--;
         }
+
     }
 }

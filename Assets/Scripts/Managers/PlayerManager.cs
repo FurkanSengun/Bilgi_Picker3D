@@ -1,5 +1,6 @@
 using Commands.Player;
 using Controllers.Player;
+using Controllers.Pool;
 using Data.UnityObjects;
 using Data.ValueObjects;
 using Keys;
@@ -14,6 +15,8 @@ namespace Managers
         #region Self Variables
 
         #region Public Variables
+
+        public static int totalPoint;
 
         public byte StageValue = 0;
 
@@ -75,8 +78,10 @@ namespace Managers
             CoreGameSignals.Instance.onLevelFailed += OnLevelFailed;
             CoreGameSignals.Instance.onStageAreaEntered += OnStageAreaEntered;
             CoreGameSignals.Instance.onFinishAreaEntered += OnFinishAreaEntered;
+            CoreGameSignals.Instance.onMiniGameAreaEntered += OnMiniGameAreaEntered;
             CoreGameSignals.Instance.onStageAreaSuccessful += OnStageAreaSuccessful;
             CoreGameSignals.Instance.onReset += OnReset;
+            CoreGameSignals.Instance.onMultiplierAreaEntered += OnMultiplierAreaEntered;
         }
 
         private void UnSubscribeEvents()
@@ -89,6 +94,8 @@ namespace Managers
             CoreGameSignals.Instance.onLevelFailed -= OnLevelFailed;
             CoreGameSignals.Instance.onStageAreaEntered -= OnStageAreaEntered;
             CoreGameSignals.Instance.onFinishAreaEntered -= OnFinishAreaEntered;
+            CoreGameSignals.Instance.onMiniGameAreaEntered += OnMiniGameAreaEntered;
+            CoreGameSignals.Instance.onMultiplierAreaEntered += OnMultiplierAreaEntered;
             CoreGameSignals.Instance.onStageAreaSuccessful -= OnStageAreaSuccessful;
             CoreGameSignals.Instance.onReset -= OnReset;
         }
@@ -140,6 +147,7 @@ namespace Managers
             meshController.ScaleUpPlayer();
             meshController.ShowUpText();
             meshController.PlayConfetiParticle();
+            meshController.UpdateTotalCount();
         }
 
         private void OnFinishAreaEntered()
@@ -147,12 +155,28 @@ namespace Managers
             movementController.IsReadyToPlay(false);
         }
 
+        private void OnMiniGameAreaEntered()
+        {
+            movementController.IsReadyToMove(true);
+            totalPoint = PlayerMeshController.totalCount;
+            PlayerMovementController.ChangeSpeed();
+            PlayerMovementController.ReduceSpeed();
+        }
+
+        private void OnMultiplierAreaEntered()
+        {
+            physicsController.MultiplyPoint();
+        }
+
+
+
         private void OnReset()
         {
             StageValue = 0;
             movementController.OnReset();
             meshController.OnReset();
             physicsController.OnReset();
+            PoolController.totalCollectCount = 0;
         }
     }
 }

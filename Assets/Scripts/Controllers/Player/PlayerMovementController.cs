@@ -3,6 +3,8 @@ using Keys;
 using Managers;
 using Sirenix.OdinInspector;
 using System;
+using DG.Tweening;
+using StylizedWater2;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -17,12 +19,13 @@ namespace Controllers.Player
         [SerializeField] private PlayerManager manager;
         [SerializeField] private new Rigidbody rigidbody;
         [SerializeField] private new Collider collider;
+        
 
         #endregion
 
         #region Private Variables
 
-        [ShowInInspector] private MovementData _data;
+        [ShowInInspector] private static MovementData _data;
         [ShowInInspector] private bool _isReadyToMove, _isReadyToPlay;
         [ShowInInspector] private float _xValue;
         private float2 _clampValues;
@@ -80,6 +83,24 @@ namespace Controllers.Player
             rigidbody.angularVelocity = float3.zero;
         }
 
+        public static void ChangeSpeed()
+        {
+            _data.ForwardSpeed += PlayerMeshController.totalCount;
+        }
+
+        public static void ReduceSpeed()
+        {
+            DOVirtual.DelayedCall(5, () =>
+            {
+                _data.ForwardSpeed = 0;
+                DOVirtual.DelayedCall(1, () =>
+                {
+                    UIManager.OnLevelSuccessful();
+                });
+            });
+            
+        }
+
         internal void IsReadyToPlay(bool condition)
         {
             _isReadyToPlay = condition;
@@ -95,6 +116,8 @@ namespace Controllers.Player
             _clampValues = new float2(inputParams.HorizontalInputClampNegativeSide,
                 inputParams.HorizontalInputClampPositiveSide);
         }
+        
+        
 
         internal void OnReset()
         {

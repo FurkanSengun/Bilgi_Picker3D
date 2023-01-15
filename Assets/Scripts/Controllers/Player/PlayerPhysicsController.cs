@@ -1,4 +1,5 @@
-﻿using Controllers.Pool;
+﻿using System.Xml.Schema;
+using Controllers.Pool;
 using DG.Tweening;
 using Managers;
 using Signals;
@@ -8,6 +9,7 @@ namespace Controllers.Player
 {
     public class PlayerPhysicsController : MonoBehaviour
     {
+        public static int _totalCollectCount;
         #region Self Variables
 
         #region Serialized Variables
@@ -51,8 +53,21 @@ namespace Controllers.Player
 
             if (other.CompareTag("MiniGame"))
             {
-                //Write Mini Game Conditions
+                CoreGameSignals.Instance.onMiniGameAreaEntered?.Invoke();
+                InputSignals.Instance.onDisableInput?.Invoke();
+
             }
+
+            if (other.CompareTag("MultiplierArea"))
+            {
+                CoreGameSignals.Instance.onMultiplierAreaEntered?.Invoke();
+            }
+        }
+
+        internal void MultiplyPoint()
+        {
+            _totalCollectCount += PlayerManager.totalPoint;
+            Debug.Log(_totalCollectCount);
         }
 
         private void OnDrawGizmos()
